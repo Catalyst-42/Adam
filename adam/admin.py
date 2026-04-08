@@ -1,11 +1,7 @@
 from django.contrib import admin
-
 from .models import Save
-
 
 @admin.register(Save)
 class SaveAdmin(admin.ModelAdmin):
-    list_display = ('id', 'created_at', 'updated_at')
-    readonly_fields = ('id', 'created_at', 'updated_at')
-    search_fields = ('id',)
-    ordering = ('-created_at',)
+    list_display = ['id', 'name']
+    readonly_fields = ['id', 'name']

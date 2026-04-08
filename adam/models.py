@@ -1,13 +1,9 @@
 from django.db import models
 
-
 class Save(models.Model):
-    save_file = models.FileField(upload_to='saves/')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ['-created_at']
+    id = models.CharField(max_length=36, primary_key=True)
+    file = models.FileField(upload_to='saves/')
+    name = models.CharField(max_length=36, blank=True)
 
     def __str__(self):
-        return f"Save {self.id}"
+        return self.id
