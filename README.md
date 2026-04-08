@@ -52,6 +52,6 @@ App will be available at `localhost:8000`.
 App stores uploaded files with timestamps.
 
 id - Auto-increment primary key  
-save_file - File field
+save_file - File field  
 created_at - Creation timestamp  
 updated_at - Last update timestamp  

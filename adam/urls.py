@@ -11,28 +11,30 @@ from rest_framework.views import APIView
 from .views import SaveViewSet
 
 router = DefaultRouter()
-router.register(r'saves', SaveViewSet, basename='save')
+router.register(r"saves", SaveViewSet, basename="save")
 
 schema_view = get_schema_view(
-    title='Adam API',
-    description='API schema for Adam',
-    version='1.0.0'
+    title="Adam API", description="API schema for Adam", version="1.0.0"
 )
+
 
 class RootAPIView(APIView):
     def get(self, request):
-        return Response({
-            'admin': request.build_absolute_uri('/admin/'),
-            'redoc': request.build_absolute_uri('/api/redoc/'),
-            'saves': request.build_absolute_uri('/api/saves/'),
-        })
+        return Response(
+            {
+                "admin": request.build_absolute_uri("/admin/"),
+                "redoc": request.build_absolute_uri("/api/redoc/"),
+                "saves": request.build_absolute_uri("/api/saves/"),
+            }
+        )
+
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/api/', permanent=False)),
-    path('api/', RootAPIView.as_view(), name='api-root'),
-    path('api/', include(router.urls)),
-    path('admin/', admin.site.urls),
-    path('api/redoc/', schema_view, name='redoc'),
+    path("", RedirectView.as_view(url="/api/", permanent=False)),
+    path("api/", RootAPIView.as_view(), name="api-root"),
+    path("api/", include(router.urls)),
+    path("admin/", admin.site.urls),
+    path("api/redoc/", schema_view, name="redoc"),
 ]
 
 if settings.DEBUG:

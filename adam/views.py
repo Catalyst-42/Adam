@@ -10,11 +10,11 @@ class SaveViewSet(viewsets.ModelViewSet):
     queryset = Save.objects.all()
     serializer_class = SaveSerializer
     parser_classes = [MultiPartParser]
-    http_method_names = ['get', 'put', 'head', 'delete']
+    http_method_names = ["get", "put", "head", "delete"]
 
     def get_object(self):
         try:
-            return Save.objects.get(pk=self.kwargs.get('pk'))
+            return Save.objects.get(pk=self.kwargs.get("pk"))
         except Save.DoesNotExist:
             return None
 
@@ -24,26 +24,21 @@ class SaveViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         file_content = instance.file.read()
-        data = json.loads(file_content.decode('utf-8'))
+        data = json.loads(file_content.decode("utf-8"))
         return Response(data)
 
     def update(self, request, *args, **kwargs):
-        """Upload save file - overwrite if exists"""
-        save_id = kwargs.get('pk')
-        file_obj = request.FILES.get('file')
+        save_id = kwargs.get("pk")
+        file_obj = request.FILES.get("file")
 
         if not file_obj:
-            return Response({'error': 'file required'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "file required"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
-        # Extract name from JSON file
-        name = "Заглушка"  # fallback value
-        try:
-            file_content = file_obj.read()
-            data = json.loads(file_content.decode('utf-8'))
-            name = data.get('name', "Заглушка")
-            file_obj.seek(0)  # reset file pointer for saving
-        except (json.JSONDecodeError, UnicodeDecodeError, AttributeError, KeyError):
-            pass  # keep fallback name
+        file_content = file_obj.read()
+        data = json.loads(file_content.decode("utf-8"))
+        name = data.get("name", "Сохранение")
 
         # Delete old file if exists
         existing = Save.objects.filter(id=save_id).first()
@@ -52,13 +47,13 @@ class SaveViewSet(viewsets.ModelViewSet):
 
         # Create or update with new file and extracted name
         save, created = Save.objects.update_or_create(
-            id=save_id,
-            defaults={'file': file_obj, 'name': name}
+            id=save_id, defaults={"file": file_obj, "name": name}
         )
 
-        return Response({'id': save.id}, status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
+        return Response(
+            {"id": save.id},
+            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK,
+        )
 
     def perform_destroy(self, instance):
-        if instance.file:
-            instance.file.delete(save=False)
         instance.delete()
