@@ -2,6 +2,9 @@
 
 Backend for Eva app. Built with Django REST Framework. Provides REST API for file storage with automatic file validation at model level. Uses SQLite as default database. Files are stored in `media/saves/` directory.
 
+> [!NOTE]  
+> Cliend app is located in [separate repository](https://github.com/Catalyst-42/Adam)
+
 ## Images
 | ![API Root](<img/Adam - Root.png>) | ![RPI Save list](<img/Adam - Save list.png>) |
 |-|-|
@@ -43,7 +46,7 @@ python3 manage.py createsuperuser
 
 Run development server:
 ```sh
-python3 manage.py runserver
+python3 manage.py runserver 0.0.0.0:8000
 ```
 
 App will be available at `localhost:8000`.
