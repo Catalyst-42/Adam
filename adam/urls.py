@@ -13,7 +13,6 @@ from .views import SaveViewSet
 router = DefaultRouter()
 router.register(r"saves", SaveViewSet, basename="save")
 
-# Это оставляем — оно будет отдавать JSON-схему для ReDoc
 schema_view = get_schema_view(
     title="Adam API", description="API schema for Adam", version="1.0.0"
 )
@@ -35,11 +34,9 @@ urlpatterns = [
     path("api/", RootAPIView.as_view(), name="api-root"),
     path("api/", include(router.urls)),
     path("admin/", admin.site.urls),
-    
-    # 1. Переносим сырую схему на отдельный URL
+
     path("api/schema/", schema_view, name="openapi-schema"),
-    
-    # 2. А сюда вешаем красивый интерфейс ReDoc, который подгрузит эту схему
+
     path(
         "api/redoc/",
         TemplateView.as_view(
